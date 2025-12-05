@@ -1,1139 +1,736 @@
-// بيانات التطبيق
-let currentUser = null;
-let bookings = [];
-let selectedFlight = null;
-let selectedHotel = null;
-let currentBooking = null;
-
-// بيانات تجريبية للرحلات
-const flightsData = [
-    {
-        id: 1,
-        airline: "الخطوط السعودية",
-        airlineCode: "SV",
-        from: "الرياض",
-        to: "دبي",
-        departureTime: "08:00",
-        arrivalTime: "10:30",
-        duration: "2h 30m",
-        date: "2024-06-15",
-        price: 899,
-        class: "اقتصادية",
-        stops: 0
-    },
-    {
-        id: 2,
-        airline: "طيران الإمارات",
-        airlineCode: "EK",
-        from: "الرياض",
-        to: "دبي",
-        departureTime: "14:30",
-        arrivalTime: "17:00",
-        duration: "2h 30m",
-        date: "2024-06-15",
-        price: 1200,
-        class: "رجال الأعمال",
-        stops: 0
-    },
-    {
-        id: 3,
-        airline: "الخطوط القطرية",
-        airlineCode: "QR",
-        from: "جدة",
-        to: "اسطنبول",
-        departureTime: "22:00",
-        arrivalTime: "03:30",
-        duration: "4h 30m",
-        date: "2024-06-20",
-        price: 1500,
-        class: "اقتصادية",
-        stops: 1
-    },
-    {
-        id: 4,
-        airline: "طيران ناس",
-        airlineCode: "XY",
-        from: "الدمام",
-        to: "القاهرة",
-        departureTime: "10:15",
-        arrivalTime: "12:45",
-        duration: "2h 30m",
-        date: "2024-06-18",
-        price: 750,
-        class: "اقتصادية",
-        stops: 0
-    },
-    {
-        id: 5,
-        airline: "الخطوط السعودية",
-        airlineCode: "SV",
-        from: "الرياض",
-        to: "لندن",
-        departureTime: "23:45",
-        arrivalTime: "06:15",
-        duration: "7h 30m",
-        date: "2024-07-01",
-        price: 2800,
-        class: "اقتصادية",
-        stops: 0
-    }
-];
-
-// بيانات تجريبية للفنادق
-const hotelsData = [
-    {
-        id: 1,
-        name: "فندق برج العرب",
-        location: "دبي",
-        rating: 5,
-        price: 1200,
-        amenities: ["wifi", "pool", "parking", "breakfast", "spa"],
-        image: "https://images.unsplash.com/photo-1516496636080-14fb876e029d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        description: "فندق فاخر 5 نجوم مع إطلالة رائعة على الخليج"
-    },
-    {
-        id: 2,
-        name: "فندق شيراتون",
-        location: "اسطنبول",
-        rating: 4,
-        price: 650,
-        amenities: ["wifi", "parking", "breakfast"],
-        image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        description: "فندق 4 نجوم في وسط المدينة بالقرب من المعالم السياحية"
-    },
-    {
-        id: 3,
-        name: "منتجع ماليزيا الدولي",
-        location: "كوالالمبور",
-        rating: 5,
-        price: 900,
-        amenities: ["wifi", "pool", "spa", "breakfast", "gym"],
-        image: "https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        description: "منتجع فاخر مع مسبح خارجي ومرافق رياضية متكاملة"
-    },
-    {
-        id: 4,
-        name: "فندق جراند حياة",
-        location: "الرياض",
-        rating: 5,
-        price: 800,
-        amenities: ["wifi", "pool", "parking", "gym", "breakfast"],
-        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        description: "فندق 5 نجوم في قلب العاصمة الرياض"
-    },
-    {
-        id: 5,
-        name: "فندق موفنبيك",
-        location: "جدة",
-        rating: 4,
-        price: 550,
-        amenities: ["wifi", "pool", "breakfast"],
-        image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        description: "فندق 4 نجوم على كورنيش جدة مع إطلالة على البحر الأحمر"
-    }
-];
-
-// بيانات تجريبية للحجوزات
-const sampleBookings = [
-    {
-        id: 1001,
-        type: "flight",
-        title: "الرياض إلى دبي",
-        date: "2024-06-15",
-        status: "upcoming",
-        price: 899,
-        details: "الخطوط السعودية - اقتصادية - رحلة ذهاب وعودة"
-    },
-    {
-        id: 1002,
-        type: "hotel",
-        title: "فندق برج العرب - دبي",
-        date: "2024-06-15",
-        checkin: "2024-06-15",
-        checkout: "2024-06-20",
-        status: "upcoming",
-        price: 4800,
-        details: "5 ليالي - غرفة ديلوكس"
-    },
-    {
-        id: 1003,
-        type: "flight",
-        title: "جدة إلى اسطنبول",
-        date: "2024-05-10",
-        status: "completed",
-        price: 1500,
-        details: "الخطوط القطرية - اقتصادية"
-    },
-    {
-        id: 1004,
-        type: "hotel",
-        title: "فندق شيراتون - اسطنبول",
-        date: "2024-05-10",
-        checkin: "2024-05-10",
-        checkout: "2024-05-15",
-        status: "completed",
-        price: 2600,
-        details: "4 ليالي - غرفة قياسية"
-    },
-    {
-        id: 1005,
-        type: "flight",
-        title: "الدمام إلى القاهرة",
-        date: "2024-04-01",
-        status: "cancelled",
-        price: 750,
-        details: "طيران ناس - اقتصادية"
-    }
-];
-
-// بيانات تجريبية للإشعارات
-const notificationsData = [
-    {
-        id: 1,
-        title: "تم تأكيد حجزك",
-        message: "تم تأكيد حجز رحلتك إلى دبي بنجاح",
-        time: "قبل ساعتين",
-        read: false
-    },
-    {
-        id: 2,
-        title: "عرض خاص",
-        message: "خصم 20% على الفنادق في ماليزيا لمدة محدودة",
-        time: "قبل يوم",
-        read: true
-    },
-    {
-        id: 3,
-        title: "تذكير بالسفر",
-        message: "رحلتك إلى اسطنبول بعد 3 أيام. لا تنسى تأكيد الحجز",
-        time: "قبل 3 أيام",
-        read: true
-    },
-    {
-        id: 4,
-        title: "تم تحديث سياسة الإلغاء",
-        message: "تم تحديث سياسة الإلغاء لرحلات الطيران. يرجى مراجعتها",
-        time: "قبل أسبوع",
-        read: true
-    }
-];
-
-// تهيئة التطبيق
-document.addEventListener('DOMContentLoaded', function() {
-    initApp();
-    loadSampleData();
-    setupEventListeners();
-    showPage('home');
-});
-
-// تهيئة التطبيق
-function initApp() {
-    // تحميل بيانات المستخدم من التخزين المحلي إن وجدت
-    const savedUser = localStorage.getItem('travelAppUser');
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        updateUserUI();
-    }
-    
-    // تحميل الحجوزات من التخزين المحلي
-    const savedBookings = localStorage.getItem('travelAppBookings');
-    if (savedBookings) {
-        bookings = JSON.parse(savedBookings);
-    } else {
-        bookings = [...sampleBookings];
-        localStorage.setItem('travelAppBookings', JSON.stringify(bookings));
-    }
+/* CSS Reset وتحديد المتغيرات */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-// تحميل البيانات التجريبية
-function loadSampleData() {
-    displayFlights(flightsData);
-    displayHotels(hotelsData);
-    displayBookings('upcoming');
-    displayNotifications();
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --text-color: #333;
+    --border-color: #ddd;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
-// إعداد مستمعي الأحداث
-function setupEventListeners() {
-    // التنقل بين الصفحات
-    document.querySelectorAll('[data-page]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const page = this.getAttribute('data-page');
-            showPage(page);
-            
-            // تحديث القائمة النشطة
-            document.querySelectorAll('.nav-links a').forEach(a => {
-                a.classList.remove('active');
-            });
-            this.classList.add('active');
-            
-            // إغلاق القائمة المتنقلة إذا كانت مفتوحة
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.remove('active');
-        });
-    });
-    
-    // تبديل القائمة المتنقلة
-    document.getElementById('menuToggle').addEventListener('click', function() {
-        const navLinks = document.querySelector('.nav-links');
-        navLinks.classList.toggle('active');
-    });
-    
-    // تبديل علامات البحث
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const tab = this.getAttribute('data-tab');
-            
-            // تحديد الأزرار النشطة
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('active');
-            });
-            this.classList.add('active');
-            
-            // إظهار النموذج المناسب
-            document.querySelectorAll('.search-form').forEach(form => {
-                form.classList.remove('active');
-            });
-            document.getElementById(tab).classList.add('active');
-        });
-    });
-    
-    // تسجيل الدخول
-    document.getElementById('loginBtn').addEventListener('click', function() {
-        openModal('loginModal');
-    });
-    
-    // إغلاق النوافذ المنبثقة
-    document.querySelectorAll('.close').forEach(closeBtn => {
-        closeBtn.addEventListener('click', function() {
-            const modal = this.closest('.modal');
-            closeModal(modal.id);
-        });
-    });
-    
-    // إغلاق النافذة المنبثقة بالنقر خارجها
-    window.addEventListener('click', function(e) {
-        if (e.target.classList.contains('modal')) {
-            closeModal(e.target.id);
-        }
-    });
-    
-    // تسجيل الدخول
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        // محاكاة تسجيل الدخول
-        if (email && password) {
-            currentUser = {
-                name: "محمد أحمد",
-                email: email,
-                phone: "0501234567",
-                nationality: "saudi",
-                dob: "1990-01-01"
-            };
-            
-            localStorage.setItem('travelAppUser', JSON.stringify(currentUser));
-            updateUserUI();
-            closeModal('loginModal');
-            showNotification('تم تسجيل الدخول بنجاح!', 'success');
-            showPage('profile');
-        } else {
-            showNotification('يرجى ملء جميع الحقول', 'error');
-        }
-    });
-    
-    // عرض نموذج التسجيل
-    document.getElementById('showRegister').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('registerForm').style.display = 'block';
-    });
-    
-    // عرض نموذج تسجيل الدخول
-    document.getElementById('showLogin').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-    });
-    
-    // إغلاق نموذج التسجيل
-    document.querySelector('.close-register').addEventListener('click', function() {
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-    });
-    
-    // تسجيل حساب جديد
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const name = document.getElementById('regName').value;
-        const email = document.getElementById('regEmail').value;
-        const phone = document.getElementById('regPhone').value;
-        const password = document.getElementById('regPassword').value;
-        
-        if (name && email && phone && password) {
-            currentUser = {
-                name: name,
-                email: email,
-                phone: phone,
-                nationality: "saudi",
-                dob: "1990-01-01"
-            };
-            
-            localStorage.setItem('travelAppUser', JSON.stringify(currentUser));
-            updateUserUI();
-            closeModal('loginModal');
-            showNotification('تم إنشاء الحساب بنجاح!', 'success');
-            showPage('profile');
-        } else {
-            showNotification('يرجى ملء جميع الحقول', 'error');
-        }
-    });
-    
-    // البحث عن رحلات طيران
-    document.getElementById('searchFlightsBtn').addEventListener('click', function() {
-        const from = document.getElementById('from').value || "الرياض";
-        const to = document.getElementById('to').value || "دبي";
-        
-        // تصفية الرحلات بناءً على المدخلات
-        const filteredFlights = flightsData.filter(flight => {
-            return (!from || flight.from.includes(from)) && 
-                   (!to || flight.to.includes(to));
-        });
-        
-        displayFlights(filteredFlights);
-        showPage('flights');
-        showNotification(`عرض ${filteredFlights.length} نتيجة لرحلات من ${from} إلى ${to}`, 'info');
-    });
-    
-    // البحث عن فنادق
-    document.getElementById('searchHotelsBtn').addEventListener('click', function() {
-        const destination = document.getElementById('destination').value || "دبي";
-        
-        // تصفية الفنادق بناءً على المدخلات
-        const filteredHotels = hotelsData.filter(hotel => {
-            return hotel.location.includes(destination);
-        });
-        
-        displayHotels(filteredHotels);
-        showPage('hotels');
-        showNotification(`عرض ${filteredHotels.length} فندق في ${destination}`, 'info');
-    });
-    
-    // تصفية الرحلات حسب السعر
-    document.getElementById('priceRange').addEventListener('input', function() {
-        const maxPrice = parseInt(this.value);
-        document.getElementById('priceValue').textContent = `${maxPrice} ريال`;
-        
-        const filteredFlights = flightsData.filter(flight => flight.price <= maxPrice);
-        displayFlights(filteredFlights);
-    });
-    
-    // تصفية الفنادق حسب السعر
-    document.getElementById('hotelPriceRange').addEventListener('input', function() {
-        const maxPrice = parseInt(this.value);
-        document.getElementById('hotelPriceValue').textContent = `${maxPrice} ريال`;
-        
-        const filteredHotels = hotelsData.filter(hotel => hotel.price <= maxPrice);
-        displayHotels(filteredHotels);
-    });
-    
-    // تصفية الرحلات حسب الخطوط الجوية
-    document.querySelectorAll('.airline-filter').forEach(filter => {
-        filter.addEventListener('change', filterFlights);
-    });
-    
-    // تصفية الفنادق حسب النجوم
-    document.querySelectorAll('.star-filter').forEach(filter => {
-        filter.addEventListener('change', filterHotels);
-    });
-    
-    // علامات تبويب الحجوزات
-    document.querySelectorAll('.booking-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-            const type = this.getAttribute('data-booking-type');
-            
-            document.querySelectorAll('.booking-tab').forEach(t => {
-                t.classList.remove('active');
-            });
-            this.classList.add('active');
-            
-            displayBookings(type);
-        });
-    });
-    
-    // علامات تبويب الملف الشخصي
-    document.querySelectorAll('.profile-menu-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const tab = this.getAttribute('data-profile-tab');
-            
-            document.querySelectorAll('.profile-menu-item').forEach(i => {
-                i.classList.remove('active');
-            });
-            this.classList.add('active');
-            
-            document.querySelectorAll('.profile-tab').forEach(t => {
-                t.classList.remove('active');
-            });
-            document.getElementById(tab).classList.add('active');
-        });
-    });
-    
-    // تحديث المعلومات الشخصية
-    document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (currentUser) {
-            currentUser.name = document.getElementById('profileName').value;
-            currentUser.email = document.getElementById('profileEmail').value;
-            currentUser.phone = document.getElementById('profilePhone').value;
-            currentUser.dob = document.getElementById('profileDob').value;
-            currentUser.nationality = document.getElementById('profileNationality').value;
-            
-            localStorage.setItem('travelAppUser', JSON.stringify(currentUser));
-            updateUserUI();
-            showNotification('تم تحديث المعلومات الشخصية بنجاح', 'success');
-        }
-    });
-    
-    // تغيير كلمة المرور
-    document.getElementById('securityForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const currentPassword = document.getElementById('currentPassword').value;
-        const newPassword = document.getElementById('newPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        
-        if (newPassword === confirmPassword) {
-            showNotification('تم تغيير كلمة المرور بنجاح', 'success');
-            this.reset();
-        } else {
-            showNotification('كلمتا المرور غير متطابقتين', 'error');
-        }
-    });
-    
-    // طرق الدفع
-    document.querySelectorAll('.payment-method').forEach(method => {
-        method.addEventListener('click', function() {
-            document.querySelectorAll('.payment-method').forEach(m => {
-                m.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    });
-    
-    // معالجة الدفع
-    document.getElementById('paymentForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // محاكاة عملية الدفع
-        setTimeout(() => {
-            closeModal('paymentModal');
-            showNotification('تم الدفع بنجاح! تم تأكيد حجزك.', 'success');
-            
-            // إضافة الحجز الجديد
-            if (currentBooking) {
-                bookings.push(currentBooking);
-                localStorage.setItem('travelAppBookings', JSON.stringify(bookings));
-                displayBookings('upcoming');
-                currentBooking = null;
-            }
-        }, 1500);
-    });
-    
-    // تاريخ اليوم كتاريخ افتراضي
-    const today = new Date().toISOString().split('T')[0];
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
-    
-    document.getElementById('departure').value = today;
-    document.getElementById('return').value = tomorrowStr;
-    document.getElementById('checkin').value = today;
-    document.getElementById('checkout').value = tomorrowStr;
+/* الأنماط العامة */
+body {
+    font-family: 'Tajawal', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: #f9f9f9;
+    direction: rtl;
 }
 
-// عرض الصفحة المحددة
-function showPage(pageId) {
-    // إخفاء جميع الصفحات
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-    });
-    
-    // إظهار الصفحة المطلوبة
-    document.getElementById(pageId).classList.add('active');
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-// فتح النافذة المنبثقة
-function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'flex';
+/* شريط التنقل */
+.navbar {
+    background-color: white;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 0;
 }
 
-// إغلاق النافذة المنبثقة
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-// تحديث واجهة المستخدم بناءً على حالة تسجيل الدخول
-function updateUserUI() {
-    if (currentUser) {
-        document.getElementById('loginBtn').textContent = 'تسجيل الخروج';
-        document.getElementById('loginBtn').onclick = logoutUser;
-        
-        // تحديث معلومات الملف الشخصي
-        if (document.getElementById('profileName')) {
-            document.getElementById('profileName').value = currentUser.name;
-            document.getElementById('profileEmail').value = currentUser.email;
-            document.getElementById('profilePhone').value = currentUser.phone;
-            document.getElementById('profileDob').value = currentUser.dob;
-            document.getElementById('profileNationality').value = currentUser.nationality;
-            
-            document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userEmail').textContent = currentUser.email;
-        }
-    } else {
-        document.getElementById('loginBtn').textContent = 'تسجيل الدخول';
-        document.getElementById('loginBtn').onclick = function() {
-            openModal('loginModal');
-        };
-    }
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
 }
 
-// تسجيل الخروج
-function logoutUser() {
-    currentUser = null;
-    localStorage.removeItem('travelAppUser');
-    updateUserUI();
-    showPage('home');
-    showNotification('تم تسجيل الخروج بنجاح', 'info');
+.logo i {
+    font-size: 1.8rem;
+    color: var(--secondary-color);
 }
 
-// عرض الرحلات
-function displayFlights(flights) {
-    const container = document.getElementById('flightResults');
-    container.innerHTML = '';
-    
-    if (flights.length === 0) {
-        container.innerHTML = '<div class="no-results">لم يتم العثور على رحلات تطابق معايير البحث</div>';
-        return;
-    }
-    
-    flights.forEach(flight => {
-        const flightElement = document.createElement('div');
-        flightElement.className = 'result-card';
-        flightElement.innerHTML = `
-            <div class="flight-header">
-                <div class="flight-info">
-                    <i class="fas fa-plane" style="color: #1a73e8; font-size: 1.5rem;"></i>
-                    <div>
-                        <h3>${flight.airline}</h3>
-                        <p>${flight.from} → ${flight.to}</p>
-                    </div>
-                </div>
-                <div class="flight-price">${flight.price} ريال</div>
-            </div>
-            <div class="flight-details">
-                <div class="flight-time">
-                    <div>
-                        <strong>${flight.departureTime}</strong>
-                        <p>${flight.from}</p>
-                    </div>
-                    <div style="text-align: center; flex: 1;">
-                        <i class="fas fa-arrow-left" style="color: #5f6368;"></i>
-                        <p style="font-size: 0.9rem; color: #5f6368;">${flight.duration}</p>
-                        <p style="font-size: 0.8rem; color: #5f6368;">${flight.stops === 0 ? 'رحلة مباشرة' : `${flight.stops} توقف`}</p>
-                    </div>
-                    <div>
-                        <strong>${flight.arrivalTime}</strong>
-                        <p>${flight.to}</p>
-                    </div>
-                </div>
-                <button class="btn-book book-flight" data-id="${flight.id}">احجز الآن</button>
-            </div>
-            <div style="margin-top: 10px; font-size: 0.9rem; color: #5f6368;">
-                <i class="far fa-calendar-alt"></i> ${formatDate(flight.date)} | 
-                <i class="fas fa-chair"></i> ${flight.class}
-            </div>
-        `;
-        
-        container.appendChild(flightElement);
-    });
-    
-    // إضافة مستمعي الأحداث لأزرار الحجز
-    document.querySelectorAll('.book-flight').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const flightId = parseInt(this.getAttribute('data-id'));
-            const flight = flightsData.find(f => f.id === flightId);
-            if (flight) {
-                openBookingModal('flight', flight);
-            }
-        });
-    });
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-// عرض الفنادق
-function displayHotels(hotels) {
-    const container = document.getElementById('hotelResults');
-    container.innerHTML = '';
-    
-    if (hotels.length === 0) {
-        container.innerHTML = '<div class="no-results">لم يتم العثور على فنادق تطابق معايير البحث</div>';
-        return;
-    }
-    
-    hotels.forEach(hotel => {
-        const stars = '★'.repeat(hotel.rating) + '☆'.repeat(5 - hotel.rating);
-        
-        const hotelElement = document.createElement('div');
-        hotelElement.className = 'result-card';
-        hotelElement.innerHTML = `
-            <div class="hotel-header">
-                <div class="hotel-info">
-                    <img src="${hotel.image}" alt="${hotel.name}" style="width: 100px; height: 80px; object-fit: cover; border-radius: 5px;">
-                    <div>
-                        <h3>${hotel.name}</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> ${hotel.location}</p>
-                        <div class="hotel-rating">
-                            <span style="color: #fbbc04;">${stars}</span>
-                            <span>(${hotel.rating} نجوم)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="hotel-price">
-                    <div>${hotel.price} ريال</div>
-                    <small>لليلة</small>
-                </div>
-            </div>
-            <p>${hotel.description}</p>
-            <div class="hotel-details">
-                <div>
-                    ${hotel.amenities.includes('wifi') ? '<span style="margin-left: 10px;"><i class="fas fa-wifi"></i> وايفاي</span>' : ''}
-                    ${hotel.amenities.includes('pool') ? '<span style="margin-left: 10px;"><i class="fas fa-swimming-pool"></i> مسبح</span>' : ''}
-                    ${hotel.amenities.includes('parking') ? '<span style="margin-left: 10px;"><i class="fas fa-parking"></i> مواقف</span>' : ''}
-                    ${hotel.amenities.includes('breakfast') ? '<span style="margin-left: 10px;"><i class="fas fa-utensils"></i> إفطار</span>' : ''}
-                </div>
-                <button class="btn-book book-hotel" data-id="${hotel.id}">احجز الآن</button>
-            </div>
-        `;
-        
-        container.appendChild(hotelElement);
-    });
-    
-    // إضافة مستمعي الأحداث لأزرار الحجز
-    document.querySelectorAll('.book-hotel').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const hotelId = parseInt(this.getAttribute('data-id'));
-            const hotel = hotelsData.find(h => h.id === hotelId);
-            if (hotel) {
-                openBookingModal('hotel', hotel);
-            }
-        });
-    });
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    align-items: center;
 }
 
-// تصفية الرحلات
-function filterFlights() {
-    const selectedAirlines = Array.from(document.querySelectorAll('.airline-filter:checked')).map(cb => cb.value);
-    const selectedTimes = Array.from(document.querySelectorAll('.time-filter:checked')).map(cb => cb.value);
-    const maxPrice = parseInt(document.getElementById('priceRange').value);
-    
-    const filteredFlights = flightsData.filter(flight => {
-        // تصفية حسب الخطوط الجوية
-        const airlineMatch = selectedAirlines.length === 0 || 
-                           selectedAirlines.includes(flight.airlineCode.toLowerCase());
-        
-        // تصفية حسب السعر
-        const priceMatch = flight.price <= maxPrice;
-        
-        // تصفية حسب الوقت
-        let timeMatch = selectedTimes.length === 0;
-        if (!timeMatch) {
-            const hour = parseInt(flight.departureTime.split(':')[0]);
-            if (selectedTimes.includes('morning') && hour >= 6 && hour < 12) timeMatch = true;
-            if (selectedTimes.includes('afternoon') && hour >= 12 && hour < 18) timeMatch = true;
-            if (selectedTimes.includes('evening') && (hour >= 18 || hour < 6)) timeMatch = true;
-        }
-        
-        return airlineMatch && priceMatch && timeMatch;
-    });
-    
-    displayFlights(filteredFlights);
+.nav-links a {
+    text-decoration: none;
+    color: var(--dark-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: var(--transition);
 }
 
-// تصفية الفنادق
-function filterHotels() {
-    const selectedStars = Array.from(document.querySelectorAll('.star-filter:checked')).map(cb => parseInt(cb.value));
-    const selectedAmenities = Array.from(document.querySelectorAll('.amenity-filter:checked')).map(cb => cb.value);
-    const maxPrice = parseInt(document.getElementById('hotelPriceRange').value);
-    
-    const filteredHotels = hotelsData.filter(hotel => {
-        // تصفية حسب النجوم
-        const starMatch = selectedStars.length === 0 || selectedStars.includes(hotel.rating);
-        
-        // تصفية حسب السعر
-        const priceMatch = hotel.price <= maxPrice;
-        
-        // تصفية حسب المرافق
-        const amenityMatch = selectedAmenities.length === 0 || 
-                           selectedAmenities.every(amenity => hotel.amenities.includes(amenity));
-        
-        return starMatch && priceMatch && amenityMatch;
-    });
-    
-    displayHotels(filteredHotels);
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--secondary-color);
+    background-color: rgba(52, 152, 219, 0.1);
 }
 
-// عرض الحجوزات
-function displayBookings(type) {
-    const container = document.getElementById('bookingsContainer');
-    container.innerHTML = '';
-    
-    const filteredBookings = bookings.filter(booking => booking.status === type);
-    
-    if (filteredBookings.length === 0) {
-        container.innerHTML = `
-            <div class="no-bookings">
-                <i class="fas fa-suitcase" style="font-size: 3rem; color: #dadce0; margin-bottom: 15px;"></i>
-                <h3>لا توجد حجوزات ${getBookingTypeText(type)}</h3>
-                <p>${getBookingMessage(type)}</p>
-            </div>
-        `;
-        return;
+.btn-login {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-login:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* القسم الرئيسي */
+.hero-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.hero-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-text h2 span {
+    color: #f1c40f;
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.search-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.tab-btn {
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Tajawal', sans-serif;
+}
+
+.tab-btn.active {
+    background: white;
+    color: var(--primary-color);
+}
+
+.search-form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    display: none;
+}
+
+.search-form.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: 'Tajawal', sans-serif;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.btn-search {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+/* قسم العروض */
+.offers-section {
+    padding: 4rem 0;
+    background-color: white;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 3rem;
+}
+
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.offer-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+}
+
+.offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.offer-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.offer-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.offer-content {
+    padding: 1.5rem;
+}
+
+.offer-content h3 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.offer-price {
+    margin: 1rem 0;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-left: 0.5rem;
+}
+
+.new-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 500;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* قسم الطيران */
+.flights-section {
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+}
+
+.results-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+}
+
+.filters-sidebar {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.filters-sidebar h3 {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #666;
+}
+
+.filter-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+
+.price-range {
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+
+.results-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.flight-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flight-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.flight-time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.flight-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+/* قسم الفنادق */
+.hotels-section {
+    padding: 4rem 0;
+    background-color: white;
+}
+
+.hotels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.hotel-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.hotel-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.hotel-details {
+    padding: 1.5rem;
+}
+
+.hotel-rating {
+    color: #f1c40f;
+    margin: 0.5rem 0;
+}
+
+.hotel-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 1rem 0;
+}
+
+/* قسم من نحن */
+.about-section {
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.feature {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.feature i {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+/* قسم اتصل بنا */
+.contact-section {
+    padding: 4rem 0;
+    background-color: white;
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+
+.contact-info h3,
+.contact-form h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.contact-item i {
+    color: var(--secondary-color);
+    font-size: 1.25rem;
+    margin-top: 0.25rem;
+}
+
+/* التذييل */
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 3rem 0 1rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+    color: #ddd;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-section ul li a:hover {
+    color: white;
+    padding-right: 5px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.social-icons a:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+}
+
+.newsletter-form button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ddd;
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+}
+
+.close:hover {
+    color: var(--text-color);
+}
+
+/* تصميم متجاوب */
+@media (max-width: 992px) {
+    .hero-content,
+    .about-content,
+    .contact-content {
+        grid-template-columns: 1fr;
     }
     
-    filteredBookings.forEach(booking => {
-        const bookingElement = document.createElement('div');
-        bookingElement.className = 'booking-item';
-        
-        let details = '';
-        if (booking.type === 'hotel' && booking.checkin && booking.checkout') {
-            details = `من ${formatDate(booking.checkin)} إلى ${formatDate(booking.checkout)}`;
-        } else {
-            details = booking.details;
-        }
-        
-        bookingElement.innerHTML = `
-            <div>
-                <h3>${booking.title}</h3>
-                <p>${details}</p>
-                <p><strong>رقم الحجز:</strong> ${booking.id}</p>
-                <p><strong>التاريخ:</strong> ${formatDate(booking.date)}</p>
-            </div>
-            <div style="text-align: left;">
-                <div class="booking-status status-${booking.status}">
-                    ${getStatusText(booking.status)}
-                </div>
-                <div style="margin-top: 10px; font-size: 1.2rem; font-weight: 700; color: #1a73e8;">
-                    ${booking.price} ريال
-                </div>
-                ${booking.status === 'upcoming' ? `
-                    <button class="btn-secondary" style="margin-top: 10px;" onclick="cancelBooking(${booking.id})">إلغاء الحجز</button>
-                ` : ''}
-            </div>
-        `;
-        
-        container.appendChild(bookingElement);
-    });
-}
-
-// عرض الإشعارات
-function displayNotifications() {
-    const container = document.querySelector('.notifications-list');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    
-    notificationsData.forEach(notification => {
-        const notificationElement = document.createElement('div');
-        notificationElement.className = `notification-item ${notification.read ? 'read' : 'unread'}`;
-        notificationElement.innerHTML = `
-            <div style="flex: 1;">
-                <h4>${notification.title}</h4>
-                <p>${notification.message}</p>
-                <p class="notification-time">${notification.time}</p>
-            </div>
-            ${!notification.read ? '<div style="width: 10px; height: 10px; background-color: #1a73e8; border-radius: 50%;"></div>' : ''}
-        `;
-        
-        container.appendChild(notificationElement);
-    });
-}
-
-// فتح نافذة الحجز
-function openBookingModal(type, item) {
-    if (!currentUser) {
-        showNotification('يرجى تسجيل الدخول لإتمام الحجز', 'error');
-        openModal('loginModal');
-        return;
+    .results-container {
+        grid-template-columns: 1fr;
     }
     
-    if (type === 'flight') {
-        selectedFlight = item;
-        document.getElementById('bookingTitle').textContent = `حجز رحلة طيران: ${item.from} → ${item.to}`;
-        
-        const passengers = parseInt(document.getElementById('passengers').value) || 1;
-        const totalPrice = item.price * passengers;
-        
-        document.getElementById('bookingDetails').innerHTML = `
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <h3>تفاصيل الرحلة</h3>
-                <p><strong>الخطوط الجوية:</strong> ${item.airline}</p>
-                <p><strong>المسار:</strong> ${item.from} → ${item.to}</p>
-                <p><strong>التاريخ:</strong> ${formatDate(item.date)}</p>
-                <p><strong>الوقت:</strong> ${item.departureTime} - ${item.arrivalTime}</p>
-                <p><strong>المدة:</strong> ${item.duration}</p>
-                <p><strong>الدرجة:</strong> ${item.class}</p>
-                <p><strong>عدد المسافرين:</strong> ${passengers}</p>
-                <p><strong>السعر الإجمالي:</strong> <span style="font-size: 1.2rem; font-weight: 700; color: #1a73e8;">${totalPrice} ريال</span></p>
-            </div>
-        `;
-        
-        // إنشاء نماذج للمسافرين
-        let passengerForms = '';
-        for (let i = 1; i <= passengers; i++) {
-            passengerForms += `
-                <div style="margin-bottom: 15px; padding: 15px; border: 1px solid #dadce0; border-radius: 5px;">
-                    <h4>المسافر ${i}</h4>
-                    <div class="form-group">
-                        <label>الاسم الكامل</label>
-                        <input type="text" class="passenger-name" placeholder="اسم المسافر" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>نوع الجواز</label>
-                            <select class="passport-type">
-                                <option value="ordinary">عادي</option>
-                                <option value="diplomatic">دبلوماسي</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>رقم الجواز</label>
-                            <input type="text" class="passport-number" placeholder="رقم الجواز" required>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        document.getElementById('passengerForms').innerHTML = passengerForms;
-        
-    } else if (type === 'hotel') {
-        selectedHotel = item;
-        const checkin = document.getElementById('checkin').value;
-        const checkout = document.getElementById('checkout').value;
-        const rooms = parseInt(document.getElementById('rooms').value) || 1;
-        const guests = parseInt(document.getElementById('guests').value) || 2;
-        
-        // حساب عدد الليالي
-        const nights = Math.ceil((new Date(checkout) - new Date(checkin)) / (1000 * 60 * 60 * 24));
-        const totalPrice = item.price * nights * rooms;
-        
-        document.getElementById('bookingTitle').textContent = `حجز فندق: ${item.name}`;
-        document.getElementById('bookingDetails').innerHTML = `
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <h3>تفاصيل الفندق</h3>
-                <p><strong>اسم الفندق:</strong> ${item.name}</p>
-                <p><strong>الموقع:</strong> ${item.location}</p>
-                <p><strong>التصنيف:</strong> ${item.rating} نجوم</p>
-                <p><strong>فترة الإقامة:</strong> ${formatDate(checkin)} إلى ${formatDate(checkout)}</p>
-                <p><strong>عدد الليالي:</strong> ${nights}</p>
-                <p><strong>عدد الغرف:</strong> ${rooms}</p>
-                <p><strong>عدد الضيوف:</strong> ${guests}</p>
-                <p><strong>السعر الإجمالي:</strong> <span style="font-size: 1.2rem; font-weight: 700; color: #1a73e8;">${totalPrice} ريال</span></p>
-            </div>
-        `;
-        
-        // إنشاء نماذج للمسافرين
-        let passengerForms = '';
-        for (let i = 1; i <= guests; i++) {
-            passengerForms += `
-                <div style="margin-bottom: 15px; padding: 15px; border: 1px solid #dadce0; border-radius: 5px;">
-                    <h4>ضيف ${i}</h4>
-                    <div class="form-group">
-                        <label>الاسم الكامل</label>
-                        <input type="text" class="passenger-name" placeholder="اسم الضيف" required>
-                    </div>
-                </div>
-            `;
-        }
-        
-        document.getElementById('passengerForms').innerHTML = passengerForms;
-    }
-    
-    // إعداد زر تأكيد الحجز
-    document.getElementById('confirmBookingBtn').onclick = function() {
-        confirmBooking(type);
-    };
-    
-    openModal('bookingModal');
-}
-
-// تأكيد الحجز
-function confirmBooking(type) {
-    // التحقق من تعبئة جميع حقول المسافرين
-    const passengerNames = document.querySelectorAll('.passenger-name');
-    let allFilled = true;
-    
-    passengerNames.forEach(input => {
-        if (!input.value.trim()) {
-            allFilled = false;
-            input.style.borderColor = '#ea4335';
-        } else {
-            input.style.borderColor = '#dadce0';
-        }
-    });
-    
-    if (!allFilled) {
-        showNotification('يرجى تعبئة معلومات جميع المسافرين', 'error');
-        return;
-    }
-    
-    // إنشاء كائن الحجز
-    if (type === 'flight') {
-        const passengers = parseInt(document.getElementById('passengers').value) || 1;
-        const totalPrice = selectedFlight.price * passengers;
-        
-        currentBooking = {
-            id: Date.now(),
-            type: 'flight',
-            title: `${selectedFlight.from} → ${selectedFlight.to}`,
-            date: selectedFlight.date,
-            status: 'upcoming',
-            price: totalPrice,
-            details: `${selectedFlight.airline} - ${selectedFlight.class} - ${passengers} مسافر`
-        };
-        
-    } else if (type === 'hotel') {
-        const checkin = document.getElementById('checkin').value;
-        const checkout = document.getElementById('checkout').value;
-        const rooms = parseInt(document.getElementById('rooms').value) || 1;
-        const guests = parseInt(document.getElementById('guests').value) || 2;
-        
-        // حساب عدد الليالي
-        const nights = Math.ceil((new Date(checkout) - new Date(checkin)) / (1000 * 60 * 60 * 24));
-        const totalPrice = selectedHotel.price * nights * rooms;
-        
-        currentBooking = {
-            id: Date.now(),
-            type: 'hotel',
-            title: `${selectedHotel.name} - ${selectedHotel.location}`,
-            date: checkin,
-            checkin: checkin,
-            checkout: checkout,
-            status: 'upcoming',
-            price: totalPrice,
-            details: `${nights} ليالي - ${rooms} غرفة - ${guests} ضيف`
-        };
-    }
-    
-    // إغلاق نافذة الحجز وفتح نافذة الدفع
-    closeModal('bookingModal');
-    openPaymentModal(currentBooking.price);
-}
-
-// فتح نافذة الدفع
-function openPaymentModal(amount) {
-    document.getElementById('totalAmount').textContent = `${amount} ريال`;
-    openModal('paymentModal');
-}
-
-// إلغاء الحجز
-function cancelBooking(bookingId) {
-    if (confirm('هل أنت متأكد من إلغاء هذا الحجز؟')) {
-        const bookingIndex = bookings.findIndex(b => b.id === bookingId);
-        if (bookingIndex !== -1) {
-            bookings[bookingIndex].status = 'cancelled';
-            localStorage.setItem('travelAppBookings', JSON.stringify(bookings));
-            displayBookings('upcoming');
-            showNotification('تم إلغاء الحجز بنجاح', 'info');
-        }
+    .form-row {
+        grid-template-columns: 1fr;
     }
 }
 
-// عرض إشعار
-function showNotification(message, type) {
-    // إنشاء عنصر الإشعار
-    const notification = document.createElement('div');
-    notification.className = `notification-toast ${type}`;
-    notification.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-        <span>${message}</span>
-    `;
-    
-    // إضافة أنماط CSS للإشعارات
-    if (!document.querySelector('#notification-styles')) {
-        const style = document.createElement('style');
-        style.id = 'notification-styles';
-        style.textContent = `
-            .notification-toast {
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                padding: 15px 25px;
-                border-radius: 5px;
-                color: white;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                z-index: 3000;
-                animation: slideIn 0.3s, fadeOut 0.3s 2.7s;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }
-            .notification-toast.success { background-color: #34a853; }
-            .notification-toast.error { background-color: #ea4335; }
-            .notification-toast.info { background-color: #1a73e8; }
-            @keyframes slideIn {
-                from { top: -100px; }
-                to { top: 20px; }
-            }
-            @keyframes fadeOut {
-                from { opacity: 1; }
-                to { opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: var(--shadow);
     }
     
-    // إضافة الإشعار إلى الصفحة
-    document.body.appendChild(notification);
+    .nav-links.active {
+        display: flex;
+    }
     
-    // إزالة الإشعار بعد 3 ثوان
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-}
-
-// وظائف مساعدة
-function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ar-SA', options);
-}
-
-function getStatusText(status) {
-    switch(status) {
-        case 'upcoming': return 'قادمة';
-        case 'completed': return 'مكتملة';
-        case 'cancelled': return 'ملغاة';
-        default: return status;
+    .menu-toggle {
+        display: block;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
     }
 }
 
-function getBookingTypeText(type) {
-    switch(type) {
-        case 'upcoming': return 'قادمة';
-        case 'completed': return 'مكتملة';
-        case 'cancelled': return 'ملغاة';
-        default: return '';
+@media (max-width: 480px) {
+    .hero-text h2 {
+        font-size: 2rem;
     }
-}
-
-function getBookingMessage(type) {
-    switch(type) {
-        case 'upcoming': return 'لا توجد حجوزات قادمة. ابدأ بالبحث عن رحلات أو فنادق جديدة!';
-        case 'completed': return 'لا توجد حجوزات مكتملة. ستظهر هنا الحجوزات التي تم إنهاؤها.';
-        case 'cancelled': return 'لا توجد حجوزات ملغاة.';
-        default: return '';
+    
+    .search-tabs {
+        flex-direction: column;
     }
-}
+    
+    .offers-grid,
+    .hotels-grid {
+        grid-template-columns: 1fr;
+    }
+    }
