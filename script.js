@@ -1,965 +1,775 @@
-/* إعدادات عامة */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --primary-color: #1a73e8;
-    --secondary-color: #34a853;
-    --accent-color: #fbbc04;
-    --dark-color: #202124;
-    --light-color: #f8f9fa;
-    --gray-color: #5f6368;
-    --border-color: #dadce0;
-    --danger-color: #ea4335;
-    --success-color: #34a853;
-    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s ease;
-}
-
-body {
-    font-family: 'Cairo', sans-serif;
-    line-height: 1.6;
-    color: var(--dark-color);
-    background-color: #f5f7fa;
-    direction: rtl;
-}
-
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* شريط التنقل */
-.navbar {
-    background-color: white;
-    box-shadow: var(--shadow);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-
-.logo i {
-    font-size: 2rem;
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    align-items: center;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--gray-color);
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--primary-color);
-    background-color: rgba(26, 115, 232, 0.1);
-}
-
-.btn-login {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Cairo', sans-serif;
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-.btn-login:hover {
-    background-color: #0d62d9;
-}
-
-.menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: var(--primary-color);
-    cursor: pointer;
-}
-
-/* الصفحات */
-.page {
-    display: none;
-    padding: 30px 0;
-}
-
-.page.active {
-    display: block;
-}
-
-.page-header {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.page-header h2 {
-    color: var(--primary-color);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-/* الصفحة الرئيسية */
-.hero {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    margin-bottom: 50px;
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: var(--shadow);
-}
-
-.hero-text {
-    flex: 1;
-}
-
-.hero-text h2 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    color: var(--dark-color);
-}
-
-.hero-text h2 span {
-    color: var(--primary-color);
-}
-
-.hero-text p {
-    font-size: 1.1rem;
-    color: var(--gray-color);
-    margin-bottom: 25px;
-}
-
-.search-tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.tab-btn {
-    padding: 10px 20px;
-    background: none;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Cairo', sans-serif;
-    transition: var(--transition);
-}
-
-.tab-btn.active {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-}
-
-.search-form {
-    display: none;
-}
-
-.search-form.active {
-    display: block;
-    animation: fadeIn 0.5s;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.form-row {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.form-group {
-    flex: 1;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: var(--dark-color);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    transition: var(--transition);
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.btn-primary:hover {
-    background-color: #0d62d9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
-}
-
-.btn-search {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.hero-image {
-    flex: 1;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.hero-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10px;
-}
-
-/* العروض الخاصة */
-.offers-section {
-    margin-top: 50px;
-}
-
-.offers-section h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: var(--dark-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.offers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-}
-
-.offer-card {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.offer-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-.offer-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.offer-content {
-    padding: 20px;
-}
-
-.offer-content h3 {
-    margin-bottom: 10px;
-    color: var(--dark-color);
-}
-
-.offer-content p {
-    color: var(--gray-color);
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-.offer-price {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 15px;
-}
-
-.btn-secondary {
-    background-color: white;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    padding: 8px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Cairo', sans-serif;
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-.btn-secondary:hover {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-/* نتائج البحث */
-.results-container {
-    display: flex;
-    gap: 30px;
-    margin-top: 30px;
-}
-
-.filters {
-    width: 250px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    height: fit-content;
-}
-
-.filters h3 {
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--dark-color);
-}
-
-.filter-group {
-    margin-bottom: 20px;
-}
-
-.filter-group h4 {
-    margin-bottom: 10px;
-    color: var(--gray-color);
-    font-size: 0.9rem;
-}
-
-.filter-group label {
-    display: block;
-    margin-bottom: 8px;
-    cursor: pointer;
-    color: var(--dark-color);
-}
-
-.filter-group input[type="checkbox"] {
-    margin-left: 8px;
-}
-
-.price-range {
-    margin-top: 10px;
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-input[type="range"] {
-    width: 100%;
-    margin-top: 5px;
-}
-
-.results {
-    flex: 1;
-}
-
-.result-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.result-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.flight-header,
-.hotel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.flight-info,
-.hotel-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.flight-price,
-.hotel-price {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.flight-details,
-.hotel-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-}
-
-.flight-time,
-.hotel-rating {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn-book {
-    background-color: var(--success-color);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Cairo', sans-serif;
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-.btn-book:hover {
-    background-color: #2a8b47;
-}
-
-/* حجوزاتي */
-.bookings-tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-    justify-content: center;
-}
-
-.booking-tab {
-    padding: 10px 25px;
-    background: none;
-    border: 2px solid var(--border-color);
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Cairo', sans-serif;
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-.booking-tab.active {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-}
-
-.bookings-container {
-    background: white;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: var(--shadow);
-}
-
-.booking-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 15px;
-    transition: var(--transition);
-}
-
-.booking-item:hover {
-    border-color: var(--primary-color);
-    background-color: rgba(26, 115, 232, 0.05);
-}
-
-.booking-status {
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.status-upcoming {
-    background-color: rgba(251, 188, 4, 0.2);
-    color: #d4a000;
-}
-
-.status-completed {
-    background-color: rgba(52, 168, 83, 0.2);
-    color: var(--success-color);
-}
-
-.status-cancelled {
-    background-color: rgba(234, 67, 53, 0.2);
-    color: var(--danger-color);
-}
-
-/* صفحة حسابي */
-.profile-container {
-    display: flex;
-    gap: 30px;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-}
-
-.profile-sidebar {
-    width: 250px;
-    background-color: #f8f9fa;
-    padding: 30px;
-}
-
-.profile-info {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.profile-avatar {
-    font-size: 4rem;
-    color: var(--primary-color);
-    margin-bottom: 15px;
-}
-
-.profile-info h3 {
-    margin-bottom: 5px;
-    color: var(--dark-color);
-}
-
-.profile-info p {
-    color: var(--gray-color);
-    margin-bottom: 5px;
-}
-
-.member-since {
-    font-size: 0.9rem;
-    color: var(--gray-color);
-}
-
-.profile-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.profile-menu-item {
-    padding: 12px 15px;
-    text-align: right;
-    background: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Cairo', sans-serif;
-    font-weight: 600;
-    transition: var(--transition);
-    color: var(--gray-color);
-}
-
-.profile-menu-item:hover,
-.profile-menu-item.active {
-    background-color: white;
-    color: var(--primary-color);
-    box-shadow: var(--shadow);
-}
-
-.profile-content {
-    flex: 1;
-    padding: 30px;
-}
-
-.profile-tab {
-    display: none;
-}
-
-.profile-tab.active {
-    display: block;
-    animation: fadeIn 0.5s;
-}
-
-.profile-tab h3 {
-    margin-bottom: 20px;
-    color: var(--dark-color);
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.preferences-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.preference-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-}
-
-.preference-item input {
-    margin-left: 0;
-}
-
-.notifications-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.notification-item {
-    padding: 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.notification-time {
-    font-size: 0.85rem;
-    color: var(--gray-color);
-}
-
-/* نافذة منبثقة */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-}
-
-.modal-content h2 {
-    margin-bottom: 20px;
-    color: var(--dark-color);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.close {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--gray-color);
-}
-
-.close:hover {
-    color: var(--dark-color);
-}
-
-.close-register {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--gray-color);
-}
-
-.booking-modal,
-.payment-modal {
-    max-width: 700px;
-}
-
-.payment-methods {
-    display: flex;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.payment-method {
-    flex: 1;
-    padding: 15px;
-    border: 2px solid var(--border-color);
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.payment-method.active {
-    border-color: var(--primary-color);
-    background-color: rgba(26, 115, 232, 0.05);
-}
-
-.payment-method i {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-
-.payment-amount {
-    font-size: 1.3rem;
-    font-weight: 700;
-    text-align: center;
-    margin: 20px 0;
-    color: var(--primary-color);
-}
-
-.payment-security {
-    text-align: center;
-    margin-top: 20px;
-    color: var(--gray-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-}
-
-/* التذييل */
-footer {
-    background-color: var(--dark-color);
-    color: white;
-    padding: 50px 0 20px;
-    margin-top: 50px;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    margin-bottom: 30px;
-}
-
-.footer-section h3 {
-    margin-bottom: 20px;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.footer-section p {
-    color: #bdc1c6;
-    margin-bottom: 15px;
-    line-height: 1.8;
-}
-
-.footer-section ul {
-    list-style: none;
-}
-
-.footer-section ul li {
-    margin-bottom: 10px;
-}
-
-.footer-section ul li a {
-    color: #bdc1c6;
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.footer-section ul li a:hover {
-    color: white;
-    padding-right: 5px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.social-icons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    color: white;
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.social-icons a:hover {
-    background-color: var(--primary-color);
-    transform: translateY(-3px);
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: #bdc1c6;
-    font-size: 0.9rem;
-}
-
-/* تصميم متجاوب */
-@media (max-width: 992px) {
-    .hero {
-        flex-direction: column;
-        text-align: center;
+// بيانات التطبيق
+const flightsData = [
+    {
+        id: 1,
+        airline: "الخطوط الليبية",
+        from: "طرابلس",
+        to: "القاهرة",
+        departure: "08:00",
+        arrival: "10:30",
+        date: "2024-06-15",
+        price: 450,
+        class: "اقتصادية",
+        duration: "2h 30m"
+    },
+    {
+        id: 2,
+        airline: "الطيران التركي",
+        from: "طرابلس",
+        to: "اسطنبول",
+        departure: "14:30",
+        arrival: "18:45",
+        date: "2024-06-16",
+        price: 650,
+        class: "اقتصادية",
+        duration: "3h 15m"
+    },
+    {
+        id: 3,
+        airline: "مصر للطيران",
+        from: "بنغازي",
+        to: "القاهرة",
+        departure: "10:15",
+        arrival: "12:30",
+        date: "2024-06-17",
+        price: 420,
+        class: "اقتصادية",
+        duration: "2h 15m"
+    },
+    {
+        id: 4,
+        airline: "طيران الإمارات",
+        from: "طرابلس",
+        to: "دبي",
+        departure: "23:45",
+        arrival: "06:30",
+        date: "2024-06-18",
+        price: 850,
+        class: "رجال الأعمال",
+        duration: "5h 45m"
+    },
+    {
+        id: 5,
+        airline: "تونس للطيران",
+        from: "مصراتة",
+        to: "تونس",
+        departure: "09:30",
+        arrival: "10:45",
+        date: "2024-06-19",
+        price: 380,
+        class: "اقتصادية",
+        duration: "1h 15m"
+    }
+];
+
+const hotelsData = [
+    {
+        id: 1,
+        name: "فندق كورنثيا طرابلس",
+        location: "طرابلس",
+        rating: 5,
+        price: 180,
+        amenities: ["وايفاي", "مسبح", "إفطار", "جيم"],
+        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    },
+    {
+        id: 2,
+        name: "فندق تيبستي بنغازي",
+        location: "بنغازي",
+        rating: 4,
+        price: 120,
+        amenities: ["وايفاي", "إفطار", "مواقف"],
+        image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    },
+    {
+        id: 3,
+        name: "فندق السلام مصراتة",
+        location: "مصراتة",
+        rating: 3,
+        price: 80,
+        amenities: ["وايفاي", "إفطار"],
+        image: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    },
+    {
+        id: 4,
+        name: "فندق الواحة سبها",
+        location: "سبها",
+        rating: 3,
+        price: 70,
+        amenities: ["وايفاي"],
+        image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    },
+    {
+        id: 5,
+        name: "فندق الزاوية",
+        location: "الزاوية",
+        rating: 2,
+        price: 60,
+        amenities: ["وايفاي"],
+        image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    }
+];
+
+// تهيئة التطبيق
+document.addEventListener('DOMContentLoaded', function() {
+    initApp();
+    setupEventListeners();
+    displayFlights(flightsData);
+    displayHotels(hotelsData);
+    
+    // تعيين التواريخ الافتراضية
+    setDefaultDates();
+});
+
+// تهيئة التطبيق
+function initApp() {
+    // تحميل بيانات المستخدم من التخزين المحلي
+    const user = localStorage.getItem('travelUser');
+    if (user) {
+        updateLoginButton(true);
+    }
+}
+
+// إعداد التواريخ الافتراضية
+function setDefaultDates() {
+    const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    const nextWeekStr = nextWeek.toISOString().split('T')[0];
+    
+    // تعيين التواريخ في حقول البحث
+    const departureDate = document.getElementById('departureDate');
+    const returnDate = document.getElementById('returnDate');
+    const checkinDate = document.getElementById('checkinDate');
+    const checkoutDate = document.getElementById('checkoutDate');
+    
+    if (departureDate) departureDate.value = today;
+    if (returnDate) returnDate.value = tomorrowStr;
+    if (checkinDate) checkinDate.value = today;
+    if (checkoutDate) checkoutDate.value = tomorrowStr;
+}
+
+// إعداد مستمعي الأحداث
+function setupEventListeners() {
+    // التنقل السلس
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // تحديث القائمة النشطة
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            }
+        });
+    });
+    
+    // تبديل القائمة المتنقلة
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
     }
     
-    .results-container {
-        flex-direction: column;
+    // إغلاق القائمة عند النقر خارجها
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.navbar') && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+        }
+    });
+    
+    // تبديل علامات البحث
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tab = this.getAttribute('data-tab');
+            
+            // إزالة النشط من جميع الأزرار
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            
+            // إضافة النشط للزر المحدد
+            this.classList.add('active');
+            
+            // إخفاء جميع النماذج
+            document.querySelectorAll('.search-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // إظهار النموذج المحدد
+            document.getElementById(tab + 'Form').classList.add('active');
+        });
+    });
+    
+    // فتح نافذة تسجيل الدخول
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function() {
+            const isLoggedIn = localStorage.getItem('travelUser');
+            if (isLoggedIn) {
+                logoutUser();
+            } else {
+                openModal('loginModal');
+            }
+        });
     }
     
-    .filters {
-        width: 100%;
+    // إغلاق النوافذ المنبثقة
+    document.querySelectorAll('.close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            if (modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
+    
+    // إغلاق النافذة المنبثقة بالنقر خارجها
+    window.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal')) {
+            closeModal(e.target.id);
+        }
+    });
+    
+    // تسجيل الدخول
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                // محاكاة تسجيل الدخول
+                const userData = {
+                    email: email,
+                    name: email.split('@')[0]
+                };
+                
+                localStorage.setItem('travelUser', JSON.stringify(userData));
+                updateLoginButton(true);
+                closeModal('loginModal');
+                showNotification('تم تسجيل الدخول بنجاح!', 'success');
+            }
+        });
     }
     
-    .profile-container {
-        flex-direction: column;
+    // تبديل بين تسجيل الدخول والتسجيل
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
+    
+    if (showRegister) {
+        showRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        });
     }
     
-    .profile-sidebar {
-        width: 100%;
+    if (showLogin) {
+        showLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        });
+    }
+    
+    // إنشاء حساب جديد
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
+            const password = document.getElementById('regPassword').value;
+            
+            if (name && email && phone && password) {
+                const userData = {
+                    name: name,
+                    email: email,
+                    phone: phone
+                };
+                
+                localStorage.setItem('travelUser', JSON.stringify(userData));
+                updateLoginButton(true);
+                closeModal('loginModal');
+                showNotification('تم إنشاء الحساب بنجاح!', 'success');
+            }
+        });
+    }
+    
+    // البحث عن الرحلات
+    const searchFlightsBtn = document.getElementById('searchFlights');
+    if (searchFlightsBtn) {
+        searchFlightsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const fromCity = document.getElementById('fromCity').value;
+            const toCity = document.getElementById('toCity').value;
+            
+            if (!fromCity || !toCity) {
+                showNotification('يرجى اختيار مدينتي المغادرة والوصول', 'error');
+                return;
+            }
+            
+            const filteredFlights = flightsData.filter(flight => {
+                return (!fromCity || flight.from.includes(fromCity)) && 
+                       (!toCity || flight.to.includes(toCity));
+            });
+            
+            displayFlights(filteredFlights);
+            
+            // التمرير إلى قسم النتائج
+            document.getElementById('flights').scrollIntoView({
+                behavior: 'smooth'
+            });
+            
+            showNotification(`عرض ${filteredFlights.length} رحلة`, 'info');
+        });
+    }
+    
+    // البحث عن الفنادق
+    const searchHotelsBtn = document.getElementById('searchHotels');
+    if (searchHotelsBtn) {
+        searchHotelsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const destination = document.getElementById('hotelDestination').value;
+            
+            if (!destination) {
+                showNotification('يرجى اختيار الوجهة', 'error');
+                return;
+            }
+            
+            const filteredHotels = hotelsData.filter(hotel => {
+                return hotel.location.includes(destination);
+            });
+            
+            displayHotels(filteredHotels);
+            
+            // التمرير إلى قسم النتائج
+            document.getElementById('hotels').scrollIntoView({
+                behavior: 'smooth'
+            });
+            
+            showNotification(`عرض ${filteredHotels.length} فندق`, 'info');
+        });
+    }
+    
+    // تصفية الرحلات حسب السعر
+    const priceRange = document.getElementById('priceRange');
+    if (priceRange) {
+        priceRange.addEventListener('input', function() {
+            const maxPrice = parseInt(this.value);
+            document.getElementById('priceValue').textContent = `${maxPrice} دينار`;
+            
+            const filteredFlights = flightsData.filter(flight => flight.price <= maxPrice);
+            displayFlights(filteredFlights);
+        });
+    }
+    
+    // تصفية حسب الخطوط الجوية
+    document.querySelectorAll('.airline-filter').forEach(filter => {
+        filter.addEventListener('change', filterFlights);
+    });
+    
+    // تصفية حسب الوقت
+    document.querySelectorAll('.time-filter').forEach(filter => {
+        filter.addEventListener('change', filterFlights);
+    });
+    
+    // نموذج الاتصال
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('تم إرسال رسالتك بنجاح، سنتواصل معك قريباً', 'success');
+            this.reset();
+        });
     }
 }
 
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: white;
-        flex-direction: column;
-        padding: 20px;
-        box-shadow: var(--shadow);
+// عرض الرحلات
+function displayFlights(flights) {
+    const container = document.getElementById('flightResults');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (flights.length === 0) {
+        container.innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-plane-slash"></i>
+                <h3>لم يتم العثور على رحلات</h3>
+                <p>جرب معايير بحث مختلفة</p>
+            </div>
+        `;
+        return;
     }
     
-    .nav-links.active {
-        display: flex;
+    flights.forEach(flight => {
+        const flightElement = document.createElement('div');
+        flightElement.className = 'flight-card';
+        flightElement.innerHTML = `
+            <div class="flight-info">
+                <div class="flight-time">
+                    <div>
+                        <strong>${flight.departure}</strong>
+                        <p>${flight.from}</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <i class="fas fa-arrow-left"></i>
+                        <p style="font-size: 0.9rem;">${flight.duration}</p>
+                    </div>
+                    <div>
+                        <strong>${flight.arrival}</strong>
+                        <p>${flight.to}</p>
+                    </div>
+                </div>
+                <div style="margin-right: 1rem;">
+                    <h4>${flight.airline}</h4>
+                    <p style="color: #666;">${flight.class}</p>
+                </div>
+            </div>
+            <div>
+                <div class="flight-price">${flight.price} د.ل</div>
+                <button class="btn-secondary book-btn" data-id="${flight.id}">احجز الآن</button>
+            </div>
+        `;
+        
+        container.appendChild(flightElement);
+    });
+    
+    // إضافة مستمعي الأحداث لأزرار الحجز
+    document.querySelectorAll('.book-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const flightId = parseInt(this.getAttribute('data-id'));
+            bookFlight(flightId);
+        });
+    });
+}
+
+// عرض الفنادق
+function displayHotels(hotels) {
+    const container = document.getElementById('hotelResults');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (hotels.length === 0) {
+        container.innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-hotel"></i>
+                <h3>لم يتم العثور على فنادق</h3>
+                <p>جرب وجهة أخرى</p>
+            </div>
+        `;
+        return;
     }
     
-    .menu-toggle {
-        display: block;
+    hotels.forEach(hotel => {
+        const stars = '★'.repeat(hotel.rating) + '☆'.repeat(5 - hotel.rating);
+        
+        const hotelElement = document.createElement('div');
+        hotelElement.className = 'hotel-card';
+        hotelElement.innerHTML = `
+            <img src="${hotel.image}" alt="${hotel.name}">
+            <div class="hotel-details">
+                <h3>${hotel.name}</h3>
+                <p style="color: #666;">
+                    <i class="fas fa-map-marker-alt"></i> ${hotel.location}
+                </p>
+                <div class="hotel-rating">${stars}</div>
+                <div class="hotel-price">${hotel.price} د.ل / ليلة</div>
+                <div style="margin: 1rem 0;">
+                    ${hotel.amenities.map(amenity => 
+                        `<span style="background: #f0f0f0; padding: 0.25rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; font-size: 0.9rem;">${amenity}</span>`
+                    ).join('')}
+                </div>
+                <button class="btn-secondary book-hotel-btn" data-id="${hotel.id}">احجز الآن</button>
+            </div>
+        `;
+        
+        container.appendChild(hotelElement);
+    });
+    
+    // إضافة مستمعي الأحداث لأزرار الحجز
+    document.querySelectorAll('.book-hotel-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const hotelId = parseInt(this.getAttribute('data-id'));
+            bookHotel(hotelId);
+        });
+    });
+}
+
+// تصفية الرحلات
+function filterFlights() {
+    const selectedAirlines = Array.from(document.querySelectorAll('.airline-filter:checked'))
+        .map(cb => cb.value);
+    const selectedTimes = Array.from(document.querySelectorAll('.time-filter:checked'))
+        .map(cb => cb.value);
+    const maxPrice = parseInt(document.getElementById('priceRange').value) || 1000;
+    
+    const filteredFlights = flightsData.filter(flight => {
+        // تصفية حسب الخطوط الجوية
+        const airlineMatch = selectedAirlines.length === 0 || 
+            selectedAirlines.some(airline => 
+                flight.airline.toLowerCase().includes(airline)
+            );
+        
+        // تصفية حسب السعر
+        const priceMatch = flight.price <= maxPrice;
+        
+        // تصفية حسب الوقت
+        let timeMatch = selectedTimes.length === 0;
+        if (!timeMatch) {
+            const hour = parseInt(flight.departure.split(':')[0]);
+            if (selectedTimes.includes('morning') && hour >= 6 && hour < 12) timeMatch = true;
+            if (selectedTimes.includes('afternoon') && hour >= 12 && hour < 18) timeMatch = true;
+            if (selectedTimes.includes('evening') && (hour >= 18 || hour < 6)) timeMatch = true;
+        }
+        
+        return airlineMatch && priceMatch && timeMatch;
+    });
+    
+    displayFlights(filteredFlights);
+}
+
+// حجز رحلة
+function bookFlight(flightId) {
+    const flight = flightsData.find(f => f.id === flightId);
+    if (!flight) return;
+    
+    const isLoggedIn = localStorage.getItem('travelUser');
+    if (!isLoggedIn) {
+        showNotification('يرجى تسجيل الدخول لإتمام الحجز', 'error');
+        openModal('loginModal');
+        return;
     }
     
-    .form-row {
-        flex-direction: column;
-        gap: 15px;
+    openBookingModal('flight', flight);
+}
+
+// حجز فندق
+function bookHotel(hotelId) {
+    const hotel = hotelsData.find(h => h.id === hotelId);
+    if (!hotel) return;
+    
+    const isLoggedIn = localStorage.getItem('travelUser');
+    if (!isLoggedIn) {
+        showNotification('يرجى تسجيل الدخول لإتمام الحجز', 'error');
+        openModal('loginModal');
+        return;
     }
     
-    .flight-details,
-    .hotel-details {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
+    openBookingModal('hotel', hotel);
+}
+
+// فتح نافذة الحجز
+function openBookingModal(type, item) {
+    const modalContent = document.getElementById('bookingContent');
+    if (!modalContent) return;
+    
+    let content = '';
+    
+    if (type === 'flight') {
+        content = `
+            <h2>حجز رحلة طيران</h2>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <h3>${item.from} → ${item.to}</h3>
+                <p><strong>الخطوط الجوية:</strong> ${item.airline}</p>
+                <p><strong>التاريخ:</strong> ${item.date}</p>
+                <p><strong>الوقت:</strong> ${item.departure} - ${item.arrival}</p>
+                <p><strong>المدة:</strong> ${item.duration}</p>
+                <p><strong>الدرجة:</strong> ${item.class}</p>
+                <p><strong>السعر:</strong> <span style="font-size: 1.5rem; color: #e74c3c;">${item.price} د.ل</span></p>
+            </div>
+            
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label>اسم المسافر</label>
+                    <input type="text" placeholder="الاسم الكامل" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم الجواز</label>
+                    <input type="text" placeholder="رقم الجواز" required>
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" placeholder="example@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <input type="tel" placeholder="09XXXXXXXX" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                    تأكيد الحجز والدفع
+                </button>
+            </form>
+        `;
+    } else if (type === 'hotel') {
+        content = `
+            <h2>حجز فندق</h2>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <h3>${item.name}</h3>
+                <p><strong>الموقع:</strong> ${item.location}</p>
+                <p><strong>التصنيف:</strong> ${item.rating} نجوم</p>
+                <p><strong>السعر:</strong> <span style="font-size: 1.5rem; color: #e74c3c;">${item.price} د.ل / ليلة</span></p>
+            </div>
+            
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label>اسم الضيف</label>
+                    <input type="text" placeholder="الاسم الكامل" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>تاريخ الوصول</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ المغادرة</label>
+                        <input type="date" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>عدد الغرف</label>
+                    <select>
+                        <option value="1">1 غرفة</option>
+                        <option value="2">2 غرف</option>
+                        <option value="3">3 غرف</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" placeholder="example@email.com" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                    تأكيد الحجز والدفع
+                </button>
+            </form>
+        `;
     }
     
-    .booking-item {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
+    modalContent.innerHTML = content;
+    
+    // إضافة مستمع الأحداث لنموذج الحجز
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('تم تأكيد حجزك بنجاح!', 'success');
+            closeModal('bookingModal');
+        });
+    }
+    
+    openModal('bookingModal');
+}
+
+// تحديث زر تسجيل الدخول
+function updateLoginButton(isLoggedIn) {
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+        if (isLoggedIn) {
+            loginBtn.textContent = 'تسجيل الخروج';
+            loginBtn.style.backgroundColor = '#e74c3c';
+        } else {
+            loginBtn.textContent = 'تسجيل الدخول';
+            loginBtn.style.backgroundColor = '';
+        }
     }
 }
 
-@media (max-width: 480px) {
-    .container {
-        padding: 0 15px;
+// تسجيل الخروج
+function logoutUser() {
+    localStorage.removeItem('travelUser');
+    updateLoginButton(false);
+    showNotification('تم تسجيل الخروج بنجاح', 'info');
+}
+
+// فتح النافذة المنبثقة
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// إغلاق النافذة المنبثقة
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// عرض الإشعارات
+function showNotification(message, type) {
+    // إنشاء عنصر الإشعار
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+    `;
+    
+    // إضافة أنماط CSS للإشعارات إذا لم تكن موجودة
+    if (!document.querySelector('#notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 4px;
+                color: white;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                z-index: 3000;
+                animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+            .notification.success { background-color: #27ae60; }
+            .notification.error { background-color: #e74c3c; }
+            .notification.info { background-color: #3498db; }
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
     }
     
-    .hero {
-        padding: 25px;
-    }
+    // إضافة الإشعار إلى الصفحة
+    document.body.appendChild(notification);
     
-    .hero-text h2 {
-        font-size: 2rem;
-    }
-    
-    .offers-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .modal-content {
-        padding: 20px;
-    }
-    
-    .payment-methods {
-        flex-direction: column;
-    }
+    // إزالة الإشعار بعد 3 ثوان
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 3000);
 }
