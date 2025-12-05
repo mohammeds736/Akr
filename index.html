@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رحالتي - تطبيق السفر والسياحة</title>
-    <link rel="stylesheet" href="style.css">
+    <title>الرحالة - تطبيق السفر والسياحة الليبي</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- شريط التنقل -->
@@ -14,19 +14,21 @@
         <div class="container">
             <div class="logo">
                 <i class="fas fa-plane"></i>
-                <h1>رحالتي</h1>
+                <h1>الرحالة الليبي</h1>
             </div>
-            <ul class="nav-links">
-                <li><a href="#" class="active" data-page="home"><i class="fas fa-home"></i> الرئيسية</a></li>
-                <li><a href="#" data-page="flights"><i class="fas fa-plane-departure"></i> الطيران</a></li>
-                <li><a href="#" data-page="hotels"><i class="fas fa-hotel"></i> الفنادق</a></li>
-                <li><a href="#" data-page="bookings"><i class="fas fa-suitcase"></i> حجوزاتي</a></li>
-                <li><a href="#" data-page="profile"><i class="fas fa-user"></i> حسابي</a></li>
-                <li><button class="btn-login" id="loginBtn">تسجيل الدخول</button></li>
-            </ul>
+            
             <button class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
             </button>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link active">الرئيسية</a></li>
+                <li><a href="#flights" class="nav-link">الطيران</a></li>
+                <li><a href="#hotels" class="nav-link">الفنادق</a></li>
+                <li><a href="#about" class="nav-link">من نحن</a></li>
+                <li><a href="#contact" class="nav-link">اتصل بنا</a></li>
+                <li><button class="btn-login" id="loginBtn">تسجيل الدخول</button></li>
+            </ul>
         </div>
     </nav>
 
@@ -49,7 +51,6 @@
             </form>
             
             <form id="registerForm" style="display: none;">
-                <span class="close-register">&times;</span>
                 <h2><i class="fas fa-user-plus"></i> إنشاء حساب جديد</h2>
                 <div class="form-group">
                     <label for="regName">الاسم الكامل</label>
@@ -61,7 +62,7 @@
                 </div>
                 <div class="form-group">
                     <label for="regPhone">رقم الهاتف</label>
-                    <input type="tel" id="regPhone" placeholder="05XXXXXXXX" required>
+                    <input type="tel" id="regPhone" placeholder="09XXXXXXXX" required>
                 </div>
                 <div class="form-group">
                     <label for="regPassword">كلمة المرور</label>
@@ -74,137 +75,238 @@
     </div>
 
     <!-- المحتوى الرئيسي -->
-    <main class="container">
-        <!-- الصفحة الرئيسية -->
-        <section id="home" class="page active">
-            <div class="hero">
-                <div class="hero-text">
-                    <h2>اكتشف العالم مع <span>رحالتي</span></h2>
-                    <p>احجز رحلتك القادمة بسهولة وأمان. طيران، فنادق، وعروض حصرية.</p>
-                    <div class="search-tabs">
-                        <button class="tab-btn active" data-tab="flight-search">طيران</button>
-                        <button class="tab-btn" data-tab="hotel-search">فنادق</button>
+    <main>
+        <!-- القسم الرئيسي -->
+        <section id="home" class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h2>سافر بسهولة مع <span>الرحالة الليبي</span></h2>
+                        <p>احجز رحلتك القادمة بأفضل الأسعار. طيران، فنادق، وعروض حصرية لجميع الوجهات.</p>
+                        
+                        <div class="search-tabs">
+                            <button class="tab-btn active" data-tab="flight">طيران</button>
+                            <button class="tab-btn" data-tab="hotel">فنادق</button>
+                            <button class="tab-btn" data-tab="package">باقات سياحية</button>
+                        </div>
+                        
+                        <!-- نموذج البحث عن الطيران -->
+                        <div class="search-form active" id="flightForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fromCity"><i class="fas fa-plane-departure"></i> من</label>
+                                    <select id="fromCity" required>
+                                        <option value="">اختر مدينة المغادرة</option>
+                                        <option value="tripoli">طرابلس</option>
+                                        <option value="benghazi">بنغازي</option>
+                                        <option value="misrata">مصراتة</option>
+                                        <option value="sabha">سبها</option>
+                                        <option value="zawiya">الزاوية</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="toCity"><i class="fas fa-plane-arrival"></i> إلى</label>
+                                    <select id="toCity" required>
+                                        <option value="">اختر مدينة الوصول</option>
+                                        <option value="cairo">القاهرة</option>
+                                        <option value="istanbul">اسطنبول</option>
+                                        <option value="dubai">دبي</option>
+                                        <option value="tunis">تونس</option>
+                                        <option value="amman">عمّان</option>
+                                        <option value="riyadh">الرياض</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="departureDate"><i class="far fa-calendar-alt"></i> تاريخ الذهاب</label>
+                                    <input type="date" id="departureDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="returnDate"><i class="far fa-calendar-alt"></i> تاريخ العودة</label>
+                                    <input type="date" id="returnDate">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="passengers"><i class="fas fa-users"></i> المسافرون</label>
+                                    <select id="passengers">
+                                        <option value="1">1 مسافر</option>
+                                        <option value="2" selected>2 مسافرين</option>
+                                        <option value="3">3 مسافرين</option>
+                                        <option value="4">4 مسافرين</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="flightClass"><i class="fas fa-chair"></i> الدرجة</label>
+                                    <select id="flightClass">
+                                        <option value="economy">اقتصادية</option>
+                                        <option value="business">رجال الأعمال</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button class="btn-primary btn-search" id="searchFlights">
+                                <i class="fas fa-search"></i> بحث عن الرحلات
+                            </button>
+                        </div>
+                        
+                        <!-- نموذج البحث عن الفنادق -->
+                        <div class="search-form" id="hotelForm">
+                            <div class="form-group">
+                                <label for="hotelDestination"><i class="fas fa-map-marker-alt"></i> الوجهة</label>
+                                <select id="hotelDestination" required>
+                                    <option value="">اختر الوجهة</option>
+                                    <option value="tripoli">طرابلس</option>
+                                    <option value="benghazi">بنغازي</option>
+                                    <option value="cairo">القاهرة</option>
+                                    <option value="istanbul">اسطنبول</option>
+                                    <option value="dubai">دبي</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="checkinDate"><i class="fas fa-sign-in-alt"></i> تاريخ الوصول</label>
+                                    <input type="date" id="checkinDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkoutDate"><i class="fas fa-sign-out-alt"></i> تاريخ المغادرة</label>
+                                    <input type="date" id="checkoutDate" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="rooms"><i class="fas fa-bed"></i> الغرف</label>
+                                    <select id="rooms">
+                                        <option value="1">1 غرفة</option>
+                                        <option value="2" selected>2 غرفة</option>
+                                        <option value="3">3 غرفة</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="guests"><i class="fas fa-users"></i> الضيوف</label>
+                                    <select id="guests">
+                                        <option value="1">1 ضيف</option>
+                                        <option value="2" selected>2 ضيف</option>
+                                        <option value="3">3 ضيوف</option>
+                                        <option value="4">4 ضيوف</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button class="btn-primary btn-search" id="searchHotels">
+                                <i class="fas fa-search"></i> بحث عن فنادق
+                            </button>
+                        </div>
+                        
+                        <!-- نموذج البحث عن الباقات -->
+                        <div class="search-form" id="packageForm">
+                            <div class="form-group">
+                                <label for="packageType"><i class="fas fa-suitcase"></i> نوع الباقة</label>
+                                <select id="packageType" required>
+                                    <option value="">اختر نوع الباقة</option>
+                                    <option value="family">عائلية</option>
+                                    <option value="honeymoon">شهر عسل</option>
+                                    <option value="adventure">مغامرات</option>
+                                    <option value="religious">دينية</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="packageDestination"><i class="fas fa-globe-africa"></i> الوجهة</label>
+                                <select id="packageDestination" required>
+                                    <option value="">اختر الوجهة</option>
+                                    <option value="turkey">تركيا</option>
+                                    <option value="egypt">مصر</option>
+                                    <option value="tunisia">تونس</option>
+                                    <option value="uae">الإمارات</option>
+                                    <option value="morocco">المغرب</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="packageDuration"><i class="far fa-clock"></i> المدة</label>
+                                    <select id="packageDuration">
+                                        <option value="3">3 أيام</option>
+                                        <option value="5">5 أيام</option>
+                                        <option value="7" selected>7 أيام</option>
+                                        <option value="10">10 أيام</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="packageTravelers"><i class="fas fa-user-friends"></i> عدد الأشخاص</label>
+                                    <select id="packageTravelers">
+                                        <option value="2">2 أشخاص</option>
+                                        <option value="4" selected>4 أشخاص</option>
+                                        <option value="6">6 أشخاص</option>
+                                        <option value="8">8 أشخاص</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button class="btn-primary btn-search" id="searchPackages">
+                                <i class="fas fa-search"></i> عرض الباقات
+                            </button>
+                        </div>
                     </div>
                     
-                    <!-- نموذج بحث الطيران -->
-                    <div class="search-form active" id="flight-search">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="from"><i class="fas fa-plane-departure"></i> من</label>
-                                <input type="text" id="from" placeholder="مدينة المغادرة">
-                            </div>
-                            <div class="form-group">
-                                <label for="to"><i class="fas fa-plane-arrival"></i> إلى</label>
-                                <input type="text" id="to" placeholder="مدينة الوصول">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="departure"><i class="far fa-calendar-alt"></i> تاريخ الذهاب</label>
-                                <input type="date" id="departure" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="return"><i class="far fa-calendar-alt"></i> تاريخ العودة</label>
-                                <input type="date" id="return">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="passengers"><i class="fas fa-users"></i> المسافرون</label>
-                                <select id="passengers">
-                                    <option value="1">1 مسافر</option>
-                                    <option value="2" selected>2 مسافرين</option>
-                                    <option value="3">3 مسافرين</option>
-                                    <option value="4">4 مسافرين</option>
-                                    <option value="5">5 مسافرين</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="class"><i class="fas fa-chair"></i> الدرجة</label>
-                                <select id="class">
-                                    <option value="economy">اقتصادية</option>
-                                    <option value="business">رجال الأعمال</option>
-                                    <option value="first">الأولى</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button class="btn-primary btn-search" id="searchFlightsBtn"><i class="fas fa-search"></i> بحث عن الرحلات</button>
+                    <div class="hero-image">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="سفر وسياحة">
                     </div>
-                    
-                    <!-- نموذج بحث الفنادق -->
-                    <div class="search-form" id="hotel-search">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="destination"><i class="fas fa-map-marker-alt"></i> الوجهة</label>
-                                <input type="text" id="destination" placeholder="أدخل المدينة أو الفندق">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="checkin"><i class="fas fa-sign-in-alt"></i> تاريخ الوصول</label>
-                                <input type="date" id="checkin" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="checkout"><i class="fas fa-sign-out-alt"></i> تاريخ المغادرة</label>
-                                <input type="date" id="checkout" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="rooms"><i class="fas fa-bed"></i> الغرف</label>
-                                <select id="rooms">
-                                    <option value="1">1 غرفة</option>
-                                    <option value="2" selected>2 غرفة</option>
-                                    <option value="3">3 غرفة</option>
-                                    <option value="4">4 غرفة</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="guests"><i class="fas fa-users"></i> الضيوف</label>
-                                <select id="guests">
-                                    <option value="1">1 ضيف</option>
-                                    <option value="2" selected>2 ضيف</option>
-                                    <option value="3">3 ضيوف</option>
-                                    <option value="4">4 ضيوف</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button class="btn-primary btn-search" id="searchHotelsBtn"><i class="fas fa-search"></i> بحث عن فنادق</button>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="سفر">
                 </div>
             </div>
-            
-            <!-- العروض الخاصة -->
-            <div class="offers-section">
-                <h2><i class="fas fa-gift"></i> عروض خاصة</h2>
+        </section>
+
+        <!-- عروض خاصة -->
+        <section class="offers-section">
+            <div class="container">
+                <h2 class="section-title"><i class="fas fa-gift"></i> عروض خاصة</h2>
+                <p class="section-subtitle">احجز الآن واستفد من أفضل العروض والخصومات</p>
+                
                 <div class="offers-grid">
                     <div class="offer-card">
-                        <img src="https://images.unsplash.com/photo-1516496636080-14fb876e029d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="دبي">
-                        <div class="offer-content">
-                            <h3>دبي</h3>
-                            <p>احجز رحلتك إلى دبي واحصل على خصم 20%</p>
-                            <div class="offer-price">من 899 ريال</div>
-                            <button class="btn-secondary">احجز الآن</button>
-                        </div>
-                    </div>
-                    <div class="offer-card">
-                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="اسطنبول">
+                        <div class="offer-badge">خصم 20%</div>
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="اسطنبول">
                         <div class="offer-content">
                             <h3>اسطنبول</h3>
-                            <p>عرض خاص لفندق 5 نجوم مع وجبة إفطار</p>
-                            <div class="offer-price">من 650 ريال</div>
+                            <p>رحلة 7 أيام مع إقامة في فندق 5 نجوم</p>
+                            <div class="offer-price">
+                                <span class="old-price">850 دينار</span>
+                                <span class="new-price">680 دينار</span>
+                            </div>
                             <button class="btn-secondary">احجز الآن</button>
                         </div>
                     </div>
+                    
                     <div class="offer-card">
-                        <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="ماليزيا">
+                        <div class="offer-badge">عرض خاص</div>
+                        <img src="https://images.unsplash.com/photo-1516496636080-14fb876e029d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="دبي">
+                        <div class="offer-content">
+                            <h3>دبي</h3>
+                            <p>5 أيام مع تذاكر دخول للمغامرات</p>
+                            <div class="offer-price">
+                                <span class="old-price">1200 دينار</span>
+                                <span class="new-price">960 دينار</span>
+                            </div>
+                            <button class="btn-secondary">احجز الآن</button>
+                        </div>
+                    </div>
+                    
+                    <div class="offer-card">
+                        <div class="offer-badge">عرض العائلة</div>
+                        <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="ماليزيا">
                         <div class="offer-content">
                             <h3>ماليزيا</h3>
-                            <p>رحلة 7 أيام مع جولات سياحية مجانية</p>
-                            <div class="offer-price">من 1200 ريال</div>
+                            <p>10 أيام مع جولات سياحية مجانية</p>
+                            <div class="offer-price">
+                                <span class="old-price">1500 دينار</span>
+                                <span class="new-price">1275 دينار</span>
+                            </div>
                             <button class="btn-secondary">احجز الآن</button>
                         </div>
                     </div>
@@ -212,269 +314,169 @@
             </div>
         </section>
 
-        <!-- صفحة البحث عن الطيران -->
-        <section id="flights" class="page">
-            <div class="page-header">
-                <h2><i class="fas fa-plane-departure"></i> البحث عن تذاكر الطيران</h2>
-                <p>ابحث وقارن بين أفضل عروض تذاكر الطيران</p>
-            </div>
-            
-            <div class="results-container">
-                <div class="filters">
-                    <h3>تصفية النتائج</h3>
-                    <div class="filter-group">
-                        <h4>السعر</h4>
-                        <input type="range" id="priceRange" min="100" max="5000" value="3000">
-                        <div class="price-range">حد أقصى: <span id="priceValue">3000 ريال</span></div>
+        <!-- قسم الطيران -->
+        <section id="flights" class="flights-section">
+            <div class="container">
+                <h2 class="section-title"><i class="fas fa-plane"></i> حجز تذاكر الطيران</h2>
+                <p class="section-subtitle">ابحث وقارن بين أفضل عروض تذاكر الطيران</p>
+                
+                <div class="results-container">
+                    <div class="filters-sidebar">
+                        <h3>تصفية النتائج</h3>
+                        
+                        <div class="filter-group">
+                            <h4>السعر (دينار ليبي)</h4>
+                            <input type="range" id="priceRange" min="100" max="2000" value="1000">
+                            <div class="price-range">حد أقصى: <span id="priceValue">1000 دينار</span></div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4>الخطوط الجوية</h4>
+                            <label><input type="checkbox" class="airline-filter" value="libyan" checked> الخطوط الليبية</label>
+                            <label><input type="checkbox" class="airline-filter" value="turkish" checked> الطيران التركي</label>
+                            <label><input type="checkbox" class="airline-filter" value="egyptair" checked> مصر للطيران</label>
+                            <label><input type="checkbox" class="airline-filter" value="emirates" checked> طيران الإمارات</label>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4>وقت المغادرة</h4>
+                            <label><input type="checkbox" class="time-filter" value="morning"> صباحاً (6ص - 12م)</label>
+                            <label><input type="checkbox" class="time-filter" value="afternoon"> بعد الظهر (12م - 6م)</label>
+                            <label><input type="checkbox" class="time-filter" value="evening"> مساءً (6م - 12ص)</label>
+                        </div>
                     </div>
-                    <div class="filter-group">
-                        <h4>الخطوط الجوية</h4>
-                        <label><input type="checkbox" class="airline-filter" value="saudia" checked> الخطوط السعودية</label>
-                        <label><input type="checkbox" class="airline-filter" value="emirates" checked> طيران الإمارات</label>
-                        <label><input type="checkbox" class="airline-filter" value="qatar" checked> الخطوط القطرية</label>
-                        <label><input type="checkbox" class="airline-filter" value="flynas" checked> طيران ناس</label>
-                    </div>
-                    <div class="filter-group">
-                        <h4>وقت المغادرة</h4>
-                        <label><input type="checkbox" class="time-filter" value="morning"> صباحاً (6ص - 12م)</label>
-                        <label><input type="checkbox" class="time-filter" value="afternoon"> بعد الظهر (12م - 6م)</label>
-                        <label><input type="checkbox" class="time-filter" value="evening"> مساءً (6م - 12ص)</label>
+                    
+                    <div class="results-content" id="flightResults">
+                        <!-- سيتم ملء النتائج بواسطة JavaScript -->
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- قسم الفنادق -->
+        <section id="hotels" class="hotels-section">
+            <div class="container">
+                <h2 class="section-title"><i class="fas fa-hotel"></i> حجز الفنادق</h2>
+                <p class="section-subtitle">اختر من بين أفضل الفنادق والمنتجعات</p>
                 
-                <div class="results" id="flightResults">
+                <div class="hotels-grid" id="hotelResults">
                     <!-- سيتم ملء النتائج بواسطة JavaScript -->
                 </div>
             </div>
         </section>
 
-        <!-- صفحة البحث عن الفنادق -->
-        <section id="hotels" class="page">
-            <div class="page-header">
-                <h2><i class="fas fa-hotel"></i> البحث عن الفنادق</h2>
-                <p>ابحث عن أفضل الفنادق والمنتجعات في وجهتك</p>
-            </div>
-            
-            <div class="results-container">
-                <div class="filters">
-                    <h3>تصفية النتائج</h3>
-                    <div class="filter-group">
-                        <h4>السعر لليلة</h4>
-                        <input type="range" id="hotelPriceRange" min="100" max="2000" value="1000">
-                        <div class="price-range">حد أقصى: <span id="hotelPriceValue">1000 ريال</span></div>
-                    </div>
-                    <div class="filter-group">
-                        <h4>التصنيف</h4>
-                        <label><input type="checkbox" class="star-filter" value="5"> ★★★★★ 5 نجوم</label>
-                        <label><input type="checkbox" class="star-filter" value="4"> ★★★★ 4 نجوم</label>
-                        <label><input type="checkbox" class="star-filter" value="3"> ★★★ 3 نجوم</label>
-                    </div>
-                    <div class="filter-group">
-                        <h4>المرافق</h4>
-                        <label><input type="checkbox" class="amenity-filter" value="wifi"> وايفاي مجاني</label>
-                        <label><input type="checkbox" class="amenity-filter" value="pool"> مسبح</label>
-                        <label><input type="checkbox" class="amenity-filter" value="parking"> مواقف مجانية</label>
-                        <label><input type="checkbox" class="amenity-filter" value="breakfast"> إفطار مجاني</label>
-                    </div>
-                </div>
+        <!-- قسم من نحن -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2 class="section-title">من نحن</h2>
                 
-                <div class="results" id="hotelResults">
-                    <!-- سيتم ملء النتائج بواسطة JavaScript -->
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>الرحالة الليبي - شركة سفر وسياحة</h3>
+                        <p>نحن شركة سفر وسياحة ليبية نعمل منذ عام 2010 لتقديم أفضل خدمات حجز تذاكر الطيران والفنادق لعملائنا الكرام في جميع أنحاء ليبيا.</p>
+                        
+                        <div class="features">
+                            <div class="feature">
+                                <i class="fas fa-shield-alt"></i>
+                                <h4>آمن وموثوق</h4>
+                                <p>خدمات آمنة ومضمونة لرحلتك</p>
+                            </div>
+                            
+                            <div class="feature">
+                                <i class="fas fa-headset"></i>
+                                <h4>دعم فني 24/7</h4>
+                                <p>دعم فني متواصل على مدار الساعة</p>
+                            </div>
+                            
+                            <div class="feature">
+                                <i class="fas fa-tags"></i>
+                                <h4>أفضل الأسعار</h4>
+                                <p>نضمن لك أفضل الأسعار في السوق</p>
+                            </div>
+                            
+                            <div class="feature">
+                                <i class="fas fa-plane"></i>
+                                <h4>رحلات متنوعة</h4>
+                                <p>خيارات سفر متنوعة لجميع الوجهات</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="فريق العمل">
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- صفحة حجوزاتي -->
-        <section id="bookings" class="page">
-            <div class="page-header">
-                <h2><i class="fas fa-suitcase"></i> حجوزاتي</h2>
-                <p>إدارة جميع حجوزاتك السابقة والمستقبلية</p>
-            </div>
-            
-            <div class="bookings-tabs">
-                <button class="booking-tab active" data-booking-type="upcoming">القادمة</button>
-                <button class="booking-tab" data-booking-type="completed">المكتملة</button>
-                <button class="booking-tab" data-booking-type="cancelled">الملغاة</button>
-            </div>
-            
-            <div class="bookings-container" id="bookingsContainer">
-                <!-- سيتم ملء الحجوزات بواسطة JavaScript -->
-            </div>
-        </section>
-
-        <!-- صفحة حسابي -->
-        <section id="profile" class="page">
-            <div class="page-header">
-                <h2><i class="fas fa-user-circle"></i> حسابي</h2>
-                <p>إدارة معلومات حسابك الشخصية</p>
-            </div>
-            
-            <div class="profile-container">
-                <div class="profile-sidebar">
-                    <div class="profile-info">
-                        <div class="profile-avatar">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <h3 id="userName">محمد أحمد</h3>
-                        <p id="userEmail">mohamed@example.com</p>
-                        <p class="member-since">عضو منذ: يناير 2024</p>
-                    </div>
-                    <div class="profile-menu">
-                        <button class="profile-menu-item active" data-profile-tab="personal">المعلومات الشخصية</button>
-                        <button class="profile-menu-item" data-profile-tab="security">الأمان</button>
-                        <button class="profile-menu-item" data-profile-tab="preferences">التفضيلات</button>
-                        <button class="profile-menu-item" data-profile-tab="notifications">الإشعارات</button>
-                    </div>
-                </div>
+        <!-- قسم اتصل بنا -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2 class="section-title">اتصل بنا</h2>
                 
-                <div class="profile-content">
-                    <div class="profile-tab active" id="personal">
-                        <h3>المعلومات الشخصية</h3>
-                        <form id="personalInfoForm">
-                            <div class="form-group">
-                                <label for="profileName">الاسم الكامل</label>
-                                <input type="text" id="profileName" value="محمد أحمد">
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>معلومات التواصل</h3>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>العنوان</h4>
+                                <p>طرابلس - ليبيا</p>
                             </div>
-                            <div class="form-group">
-                                <label for="profileEmail">البريد الإلكتروني</label>
-                                <input type="email" id="profileEmail" value="mohamed@example.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="profilePhone">رقم الهاتف</label>
-                                <input type="tel" id="profilePhone" value="0501234567">
-                            </div>
-                            <div class="form-group">
-                                <label for="profileDob">تاريخ الميلاد</label>
-                                <input type="date" id="profileDob" value="1990-01-01">
-                            </div>
-                            <div class="form-group">
-                                <label for="profileNationality">الجنسية</label>
-                                <select id="profileNationality">
-                                    <option value="saudi">سعودي</option>
-                                    <option value="emirati">إماراتي</option>
-                                    <option value="kuwaiti">كويتي</option>
-                                    <option value="other">أخرى</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn-primary">حفظ التغييرات</button>
-                        </form>
-                    </div>
-                    
-                    <div class="profile-tab" id="security">
-                        <h3>الأمان</h3>
-                        <form id="securityForm">
-                            <div class="form-group">
-                                <label for="currentPassword">كلمة المرور الحالية</label>
-                                <input type="password" id="currentPassword">
-                            </div>
-                            <div class="form-group">
-                                <label for="newPassword">كلمة المرور الجديدة</label>
-                                <input type="password" id="newPassword">
-                            </div>
-                            <div class="form-group">
-                                <label for="confirmPassword">تأكيد كلمة المرور الجديدة</label>
-                                <input type="password" id="confirmPassword">
-                            </div>
-                            <button type="submit" class="btn-primary">تغيير كلمة المرور</button>
-                        </form>
-                    </div>
-                    
-                    <div class="profile-tab" id="preferences">
-                        <h3>التفضيلات</h3>
-                        <div class="preferences-list">
-                            <label class="preference-item">
-                                <input type="checkbox" checked> الحصول على عروض خاصة عبر البريد الإلكتروني
-                            </label>
-                            <label class="preference-item">
-                                <input type="checkbox" checked> إرسال تذكيرات بالسفر
-                            </label>
-                            <label class="preference-item">
-                                <input type="checkbox"> مشاركة بيانات السفر مع شركائنا
-                            </label>
-                            <label class="preference-item">
-                                <input type="checkbox" checked> اللغة العربية
-                            </label>
-                            <label class="preference-item">
-                                <input type="checkbox"> اللغة الإنجليزية
-                            </label>
                         </div>
-                        <button class="btn-primary">حفظ التفضيلات</button>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>الهاتف</h4>
+                                <p>+218 21 123 4567</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>البريد الإلكتروني</h4>
+                                <p>info@alrahala.ly</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>ساعات العمل</h4>
+                                <p>الأحد - الخميس: 8 ص - 4 م</p>
+                                <p>الجمعة - السبت: مغلق</p>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="profile-tab" id="notifications">
-                        <h3>الإشعارات</h3>
-                        <div class="notifications-list">
-                            <!-- سيتم ملء الإشعارات بواسطة JavaScript -->
-                        </div>
+                    <div class="contact-form">
+                        <h3>أرسل رسالة</h3>
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <input type="text" placeholder="الاسم الكامل" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="email" placeholder="البريد الإلكتروني" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="tel" placeholder="رقم الهاتف" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea placeholder="رسالتك" rows="5" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary">إرسال الرسالة</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <!-- نافذة الحجز -->
-        <div class="modal" id="bookingModal">
-            <div class="modal-content booking-modal">
-                <span class="close">&times;</span>
-                <h2 id="bookingTitle">حجز رحلة طيران</h2>
-                <div id="bookingDetails">
-                    <!-- تفاصيل الحجز ستظهر هنا -->
-                </div>
-                <div class="booking-form">
-                    <h3>معلومات المسافرين</h3>
-                    <div id="passengerForms">
-                        <!-- نماذج المسافرين ستظهر هنا -->
-                    </div>
-                    <button class="btn-primary" id="confirmBookingBtn">تأكيد الحجز والدفع</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- نافذة الدفع -->
-        <div class="modal" id="paymentModal">
-            <div class="modal-content payment-modal">
-                <span class="close">&times;</span>
-                <h2><i class="fas fa-credit-card"></i> إتمام الدفع</h2>
-                <div class="payment-amount">
-                    المبلغ الإجمالي: <span id="totalAmount">0 ريال</span>
-                </div>
-                <div class="payment-methods">
-                    <div class="payment-method active" data-method="credit">
-                        <i class="fas fa-credit-card"></i>
-                        <span>بطاقة ائتمان</span>
-                    </div>
-                    <div class="payment-method" data-method="mada">
-                        <i class="fas fa-credit-card"></i>
-                        <span>مدى</span>
-                    </div>
-                    <div class="payment-method" data-method="applepay">
-                        <i class="fab fa-apple"></i>
-                        <span>Apple Pay</span>
-                    </div>
-                </div>
-                <form id="paymentForm">
-                    <div class="form-group">
-                        <label for="cardNumber">رقم البطاقة</label>
-                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="expiryDate">تاريخ الانتهاء</label>
-                            <input type="text" id="expiryDate" placeholder="MM/YY">
-                        </div>
-                        <div class="form-group">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" placeholder="123">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cardName">اسم حامل البطاقة</label>
-                        <input type="text" id="cardName" placeholder="كما هو مكتوب على البطاقة">
-                    </div>
-                    <button type="submit" class="btn-primary" id="processPaymentBtn">إتمام الدفع</button>
-                </form>
-                <p class="payment-security"><i class="fas fa-lock"></i> جميع عمليات الدفع مشفرة وآمنة</p>
-            </div>
-        </div>
     </main>
 
     <!-- التذييل -->
@@ -482,46 +484,66 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3><i class="fas fa-plane"></i> رحالتي</h3>
-                    <p>نقدم لكم أفضل خدمات حجز تذاكر الطيران والفنادق بأسعار تنافسية وخدمة عملاء متميزة.</p>
+                    <h3><i class="fas fa-plane"></i> الرحالة الليبي</h3>
+                    <p>شركة سفر وسياحة ليبية تقدم أفضل خدمات حجز تذاكر الطيران والفنادق بأسعار تنافسية.</p>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
+                
                 <div class="footer-section">
                     <h3>روابط سريعة</h3>
                     <ul>
-                        <li><a href="#" data-page="flights">حجز الطيران</a></li>
-                        <li><a href="#" data-page="hotels">حجز الفنادق</a></li>
-                        <li><a href="#">عروض خاصة</a></li>
-                        <li><a href="#">الوجهات السياحية</a></li>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#flights">حجز الطيران</a></li>
+                        <li><a href="#hotels">حجز الفنادق</a></li>
+                        <li><a href="#about">من نحن</a></li>
+                        <li><a href="#contact">اتصل بنا</a></li>
                     </ul>
                 </div>
+                
                 <div class="footer-section">
-                    <h3>الدعم</h3>
+                    <h3>الوجهات الشعبية</h3>
                     <ul>
-                        <li><a href="#">الأسئلة الشائعة</a></li>
-                        <li><a href="#">اتصل بنا</a></li>
-                        <li><a href="#">سياسة الخصوصية</a></li>
-                        <li><a href="#">شروط الاستخدام</a></li>
+                        <li><a href="#">تركيا</a></li>
+                        <li><a href="#">مصر</a></li>
+                        <li><a href="#">تونس</a></li>
+                        <li><a href="#">الإمارات</a></li>
+                        <li><a href="#">المغرب</a></li>
                     </ul>
                 </div>
+                
                 <div class="footer-section">
-                    <h3>اتصل بنا</h3>
-                    <p><i class="fas fa-phone"></i> 9200XXXXX</p>
-                    <p><i class="fas fa-envelope"></i> info@rahalati.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</p>
+                    <h3>النشرة الإخبارية</h3>
+                    <p>اشترك لتحصل على آخر العروض والخصومات</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="بريدك الإلكتروني" required>
+                        <button type="submit">اشترك</button>
+                    </form>
                 </div>
             </div>
+            
             <div class="footer-bottom">
-                <p>&copy; 2024 رحالتي. جميع الحقوق محفوظة.</p>
+                <p>&copy; 2024 الرحالة الليبي. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- نافذة الحجز -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content booking-modal">
+            <span class="close">&times;</span>
+            <div id="bookingContent">
+                <!-- محتوى الحجز -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
 </body>
-</html>
+</html> 
+    
+                                                                     </html>
